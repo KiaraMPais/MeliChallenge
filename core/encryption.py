@@ -11,9 +11,7 @@ SECRET_KEY = (config('SECRET_KEY')).encode('utf-8')
 
 
 # Función para cifrar la connection string usando AES en modo CBC
-def encrypt_connection_string(connection_string: str) -> str:
-
-
+def encrypt_string(connection_string: str) -> str:
     iv = os.urandom(16)
     cipher = Cipher(algorithms.AES(SECRET_KEY), modes.CBC(iv), backend=default_backend())
     encryptor = cipher.encryptor()
@@ -30,7 +28,7 @@ def encrypt_connection_string(connection_string: str) -> str:
 
 
 # Función para descifrar la connection string
-def decrypt_connection_string(encrypted_string: str) -> str:
+def decrypt_string(encrypted_string: str) -> str:
     encrypted_data = base64.b64decode(encrypted_string)
     iv = encrypted_data[:16]
     encrypted = encrypted_data[16:]

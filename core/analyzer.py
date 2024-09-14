@@ -7,6 +7,8 @@ class DBEngine:
         self.connection_string = conn_string
         self.engine = create_engine(self.connection_string)
 
+
+
     def get_db_tables(self):
 
         # Usar el inspector para obtener las tablas

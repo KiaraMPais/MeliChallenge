@@ -1,2 +1,2 @@
 from .analyzer import DBEngine
-from .encryption import encrypt_connection_string, decrypt_connection_string
+from .encryption import encrypt_string, decrypt_string

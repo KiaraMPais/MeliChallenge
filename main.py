@@ -1,19 +1,18 @@
-from decouple import config
-from core import DBEngine
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from database import sql_connection
+from routes import app_router
 
 
-#region Variables
-DB_USER=config('MYSQL_USER')
-DB_PWD=config('MYSQL_PASSWORD')
-DB_HOST=config('MYSQL_HOST')
-DB_PORT=config('MYSQL_PORT')
-DB_NAME=config('MYSQL_DB')
-#endregion
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    try:
+        sql_connection.create_db_and_tables()
+        yield
+    finally:
+        pass
 
 
-
-
-if __name__ == '__main__':
-    connection_string = f"mysql+mysqlconnector://{DB_USER}:{DB_PWD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    db_engine = DBEngine(connection_string)
-    db_engine.get_db_tables()
+app = FastAPI(lifespan=lifespan)
+app.include_router(app_router, prefix='/api')
