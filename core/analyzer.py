@@ -5,6 +5,19 @@ from models import Rule
 import re
 
 
+def load_classification_rules():
+    """Cargar las reglas de clasificación desde la base de datos."""
+    session = next(sql_connection.get_session())
+    try:
+        query = session.exec(select(Rule))
+        result = query.fetchall()
+
+        rules = {row.rule_name: row.regex_pattern for row in result}
+        AnalyzerEngine.classification_rules = rules
+    finally:
+        session.close()
+
+
 class AnalyzerEngine:
 
 
@@ -17,27 +30,14 @@ class AnalyzerEngine:
         self.connection_string = conn_string
         self.engine = create_engine(self.connection_string)
         if not AnalyzerEngine.classification_rules:
-            AnalyzerEngine.classification_rules = self.load_classification_rules()
-
-    def load_classification_rules(self):
-        """Cargar las reglas de clasificación desde la base de datos."""
-        session = next(sql_connection.get_session())
-        try:
-            query = session.exec(select(Rule))
-            result = query.fetchall()
-
-            rules = {row.rule_name: row.regex_pattern for row in result}
-            return rules
-        finally:
-            session.close()
-
+            load_classification_rules()
 
     def classify_column(self, column_name):
         """Clasifica una columna basándose en su nombre y las reglas predefinidas."""
         for category, regex in self.classification_rules.items():
             if re.search(regex, column_name):
                 return category
-        return "UNKNOWN"
+        return "N/A"
 
     def classify_db_structure(self):
         """Obtiene y clasifica automáticamente la estructura de la base de datos."""

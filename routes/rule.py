@@ -2,8 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
 from database import sql_connection
 from models import Rule, RuleCreate, RuleUpdate
-from uuid import UUID
-
+from core import load_classification_rules
 
 router = APIRouter()
 
@@ -24,6 +23,10 @@ def create_rule(*, session: Session = Depends(sql_connection.get_session), rule:
         session.add(new_rule)
         session.commit()
         session.refresh(new_rule)
+
+        # Refresh a la lista de reglas de clasificación
+        load_classification_rules()
+
         return new_rule
     except:
         raise HTTPException(status_code=400, detail="Error adding rule")
