@@ -3,10 +3,8 @@ from datetime import datetime, timezone
 from typing import Optional, Literal
 from sqlmodel import Field, SQLModel
 
-def datetime_now() -> datetime:
-    return datetime.now(timezone.utc)
 
-
+# Mapeo de motores de base de datos
 engine_map = {
     "MySQL": "mysql+mysqlconnector",
     "PostgreSQL": "postgresql+psycopg2",
@@ -15,15 +13,15 @@ engine_map = {
 }
 
 #Data Source Connections
-class DSConnection(SQLModel, table=True):
+class DBData(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     friendly_name: Optional[str]
     connection_string: str
-    created: datetime = Field(default_factory=datetime_now)
-    updated: Optional[datetime]
+    created: datetime = Field(default_factory=datetime.utcnow)
+    updated: Optional[datetime] = None
 
-
-class DSConnectionCreate(SQLModel):
+# Para poder ser flexibles con el motor, pero ser "user friendly" se mapeo el connector a un friendly name
+class DBDataCreate(SQLModel):
     friendly_name: Optional[str]
     host: str
     port: int
@@ -32,8 +30,7 @@ class DSConnectionCreate(SQLModel):
     database: str
     engine: Literal["MySQL", "PostgreSQL", "SQLite", "SQLServer"]
 
-
-class DSConnectionResponse(SQLModel):
+class DBDataResponse(SQLModel):
     id: UUID
     friendly_name: Optional[str]
     created: datetime
