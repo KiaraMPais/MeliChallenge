@@ -10,7 +10,6 @@ class RuleCreate(SQLModel):
 class RuleUpdate(SQLModel):
     rule_name: Optional[str] = Field(max_length=100)
     regex_pattern: Optional[str]
-    updated: datetime = Field(default_factory=datetime.utcnow)
 
 class Rule(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)

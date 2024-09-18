@@ -19,3 +19,4 @@ class ScanResult(SQLModel, table=True):
     data: dict = Field(sa_type=JSON)
     created: datetime = Field(default_factory=datetime.utcnow)
 
+

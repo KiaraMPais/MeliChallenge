@@ -3,6 +3,7 @@ from sqlmodel import Session, select
 from database import sql_connection
 from models import Rule, RuleCreate, RuleUpdate
 from core import load_classification_rules
+from datetime import datetime
 
 router = APIRouter()
 
@@ -34,30 +35,37 @@ def create_rule(*, session: Session = Depends(sql_connection.get_session), rule:
 
 
 """Actualizar una regla existente en la base de datos."""
-"""
-@router.put("/{id}")
-def update_rule(*, session: Session = Depends(sql_connection.get_session), id: UUID, rule: RuleUpdate):
-    select_query = select(Rule).where(Rule.id == id)
+@router.put("/{rule_id}", status_code=204)
+def update_rule(*, session: Session = Depends(sql_connection.get_session), rule_id: int, rule: RuleUpdate):
+    select_query = select(Rule).where(Rule.id == rule_id)
     result = session.exec(select_query)
-    existing_rule = result.first()
+    existing_rule = result.one()
+
+    existing_rule.rule_name = rule.rule_name
+    existing_rule.regex_pattern = rule.regex_pattern
+    existing_rule.updated = datetime.utcnow()
+
+    session.add(existing_rule)
+    session.commit()
+
+    # Refresh a la lista de reglas de clasificación
+    load_classification_rules()
+
     if not existing_rule:
         raise HTTPException(status_code=404, detail="Rule not found")
-    
 
 
-@router.delete("/{id}")
-def delete_rule(rule_name: str):
-
-    classification_rules_table = get_classification_rules_table()
-
-    delete_query = delete(classification_rules_table).where(
-        classification_rules_table.c.rule_name == rule_name
-    )
-
-    with rules_engine.connect() as conn:
-        result = conn.execute(delete_query)
-        if result.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Rule not found")
-        return {"message": "Rule deleted successfully"}
-"""
 """Eliminar una regla de clasificación de la base de datos."""
+@router.delete("/{rule_id}", status_code=204)
+def delete_rule(*, session: Session = Depends(sql_connection.get_session), rule_id: int):
+    try:
+        query = select(Rule).where(Rule.id == rule_id)
+        results = session.exec(query)
+        rule = results.one()
+        session.delete(rule)
+        session.commit()
+        return
+    except:
+        raise HTTPException(status_code=404, detail="Rule not found")
+
+
