@@ -1,0 +1,37 @@
+# Ignorar el entorno virtual
+.venv/
+env/
+venv/
+
+# Ignorar archivos de configuración del editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Ignorar archivos y carpetas de control de versiones
+.git/
+.gitignore
+
+# Ignorar archivos de logs
+*.log
+
+# Ignorar archivos compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar archivos de entorno
+.env
+
+# Ignorar archivos de documentación
+*.md
+
+# Ignorar archivos de Docker no necesarios
+Dockerfile
+.dockerignore
+
+# Ignorar otros archivos no necesarios
+*.bak
+*.tmp
