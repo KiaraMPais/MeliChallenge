@@ -1,5 +1,5 @@
 import random
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.exc import SQLAlchemyError
 from database import sql_connection
 from sqlmodel import select
@@ -45,7 +45,7 @@ class AnalyzerEngine:
         try:
             with self.engine.connect() as connection:
                 # Obtener la cuenta total de filas en la tabla
-                total_rows = connection.execute(f"SELECT COUNT(*) FROM {table}").scalar()
+                total_rows = connection.execute(text(f"SELECT COUNT(*) FROM {table}")).scalar()
 
                 # Si no hay filas, devolver "N/A"
                 if total_rows == 0:
@@ -59,7 +59,7 @@ class AnalyzerEngine:
                 random_offsets = random.sample(range(total_rows), num_rows_to_fetch)
                 data_sample = []
                 for offset in random_offsets:
-                    result = connection.execute(f"SELECT {column_name} FROM {table} LIMIT 1 OFFSET {offset}")
+                    result = connection.execute(text(f"SELECT {column_name} FROM {table} LIMIT 1 OFFSET {offset}"))
                     data_sample.append(result.fetchone())
 
             # Clasificar los datos obtenidos usando las reglas basadas en patrones de valores
