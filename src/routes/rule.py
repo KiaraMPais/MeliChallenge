@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
+from mysql.connector import DATETIME
 from sqlmodel import Session, select
 from database import sql_connection
 from models import Rule, RuleCreate, RuleUpdate
@@ -43,7 +44,7 @@ def update_rule(*, session: Session = Depends(sql_connection.get_session), rule_
 
     existing_rule.rule_name = rule.rule_name
     existing_rule.regex_pattern = rule.regex_pattern
-    existing_rule.updated = datetime.utcnow()
+    existing_rule.updated = datetime.now(DATETIME.UTC)
 
     session.add(existing_rule)
     session.commit()
