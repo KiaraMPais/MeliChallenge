@@ -1,0 +1,10 @@
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (1, 'NAME', '(?i)(first|last|full|given|family)?_?name', 0, '2024-09-16 01:57:36', null);
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (2, 'IP_ADDRESS', '(?i)(ip|remote|issued|consumed|client|server|source|revoked|dest(ination)?)_?(ip|address)', 0, '2024-09-16 03:10:26', null);
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (3, 'CREDIT_CARD_NUMBER', '(?i)(credit|cc)_?card_?number', 0, '2024-09-16 03:10:56', null);
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (4, 'EMAIL', '(?i)(email|e-?mail)_?address?', 0, '2024-09-16 03:11:11', null);
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (5, 'PHONE', '(?i)(phone|mobile|cell)_?number?', 0, '2024-09-16 03:11:24', null);
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (6, 'ADDRESS', '(?i)(address|street|postal)_?(line|address)?', 0, '2024-09-16 03:11:43', null);
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (7, 'USERNAME', '(?i)(user|usr)_?name', 0, '2024-09-16 03:11:59', '2024-09-18 18:41:07');
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (8, 'EMAIL_VALUES', '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$', 1, '2024-09-20 01:58:09', null);
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (9, 'CUIL/CUIT/DNI', '\\b((20|23|24|27|30|33|34)\\d{8}(\\d)|\\d{7,8})\\b', 1, '2024-09-20 02:10:37', null);
+INSERT INTO rule (id, rule_name, regex_pattern, is_value_rule, created, updated) VALUES (10, 'CREDIT_CARD', '\\b(4\\d{3}|5[1-5]\\d{2}|3[47]\\d{2}|6011)\\d{12}(\\d{3})?\\b|\\b(?:\\d[ -]*?){13,16}\\b', 1, '2024-09-20 02:19:52', null);
