@@ -44,6 +44,10 @@ Recorda pasar las variables de entorno necesarias al contenedor.
 En caso contrario se puede pasar un archivo env usando el flag --env-file 
 
 
+## Base de datos
+La base de datos para la aplicacion se despliega automaticamente al iniciar la aplicacion.
+Dentro de la carpeta SQL se encuentran valores por defecto para las reglas, que deberan ser cargados y ademas una base de datos para probar las reglas.
+
 ## Variables de entorno
 
 ### Base de datos para la aplicación
